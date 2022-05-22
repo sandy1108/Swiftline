@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -185,7 +185,7 @@
 				};
 			};
 			buildConfigurationList = "___RootConfs_" /* Build configuration list for PBXProject "Swiftline" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -280,6 +280,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = __PBXFileRef_Swiftline.xcodeproj/Configs/Project.xcconfig /* Swiftline.xcodeproj/Configs/Project.xcconfig */;
 			buildSettings = {
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -287,6 +288,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = __PBXFileRef_Swiftline.xcodeproj/Configs/Project.xcconfig /* Swiftline.xcodeproj/Configs/Project.xcconfig */;
 			buildSettings = {
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
