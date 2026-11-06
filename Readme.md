@@ -20,6 +20,25 @@ Swiftline contains the following:
 - Env: Read and write environment variables [ruby-flavored](http://ruby-doc.org/core-2.2.0/ENV.html)
 - Args: Parses command line arguments and return a hash of the passed flags
 
+## 当前维护分支（sandy1108）
+
+本分支用于维护现有macOS命令行工具依赖。已验证Xcode27.1 / Apple Swift6.4编译器，以Swift5语言模式构建，macOS最低版本为12.0；Release framework包含arm64和x86_64两种架构。ARM64参数解析和实际消费端运行已验证，Intel架构完成编译、链接，实际运行尚未验证。
+
+在仓库根目录执行：
+
+```bash
+xcodebuild -project Swiftline.xcodeproj -scheme Swiftline \
+  -configuration Release -sdk macosx \
+  -derivedDataPath "$HOME/Library/Developer/Xcode/DerivedData/Swiftline" \
+  ARCHS="arm64 x86_64" ONLY_ACTIVE_ARCH=NO \
+  CODE_SIGNING_ALLOWED=NO SWIFT_VERSION=5.0 \
+  BUILD_LIBRARY_FOR_DISTRIBUTION=NO build
+```
+
+产物位于上述DerivedData目录的`Build/Products/Release/Swiftline.framework`。更换Swift编译器后，应使用源码重新编译framework，不能只修改消费端的Swift语言版本。
+
+本轮没有修改Swift源码及公开API。下文保留上游历史介绍、徽标和安装方式；当前验证路径是本分支的Xcode工程，旧Podspec及Package.swift未同步升级，不代表这些安装方式已适配当前工具链。
+
 ## Contents
 [Usage](#usage)
 [Installation](#installation)
@@ -89,7 +108,7 @@ Validations are added by calling `addInvalidCase` on `AskSettings`.
 ```swift
 let name = ask("Who are you?") { settings in
     settings.addInvalidCase("Snuffles is not allowed") { value in
-        value.containsString("Snuffles")
+        value.contains("Snuffles")
     }
 }
 ```
@@ -158,7 +177,7 @@ let choice = choose("Whats your favorite programming language? ", type: Int.self
 
 The number on the left can be changed to letters, here is how you could do that:
 
-```siwft
+```swift
 let choice = choose("Whats your favorite programming language? ", type: String.self) { settings in
    //choice value will be set to GOOD
    settings.addChoice("Swift") { "GOOD" }
@@ -166,7 +185,7 @@ let choice = choose("Whats your favorite programming language? ", type: String.s
    //choice value will be set to BAD
    settings.addChoice("Java") { "BAD" }
 
-   settings.index = .Letters
+   settings.index = .letters
    settings.indexSuffix = " ----> "
    }
 ```
@@ -264,12 +283,12 @@ Returns the arguments passed to the script. For example when calling `script -f1
 
 `Args.parsed.parameters` returns `["val3", "val4"]`
 
-`Args.parsed.flags` returns a dictinary of flags `["f1": "val1", "f2", "val2"]`
+`Args.parsed.flags` returns a dictinary of flags `["f1": "val1", "f2": "val2"]`
 
 `Args.parsed.command` returns the name of the executable itself `"script"`
 
 ## Installation
-You can install Swiftline using CocoaPods, carthage and Swift package manager
+The following installation methods are retained from upstream and have not been revalidated for this fork. For current macOS builds, use the Xcode project command above.
 
 ### CocoaPods
     use_frameworks!
@@ -300,7 +319,7 @@ If you want to use swiftline in a script you can use [Rome](https://github.com/n
     pod 'Swiftline'
 
 ### Manual
-To install Swiftline manually, add `Pod/Swiftline` directory to your project.
+To install Swiftline manually, add the files in the `Source/` directory to your project.
 
 ## Examples
 A list of examples can be found [here](https://github.com/oarrabi/Swiftline/tree/master/Examples)
